@@ -21,7 +21,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-#ifndef ESP32
+#if 0
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>

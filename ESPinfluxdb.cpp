@@ -2,7 +2,7 @@
 #include "ESPinfluxdb.h"
 
 
-//#define DEBUG_PRINT // comment this line to disable debug print
+#define DEBUG_PRINT // comment this line to disable debug print
 
 #ifndef DEBUG_PRINT
 #define DEBUG_PRINT(a)
@@ -12,7 +12,7 @@
 #endif
 
 Influxdb::Influxdb(String host, uint16_t port) {
-        _url = "http://" + host + ":" + port;
+        _url = "https://" + host + ":" + port;
 }
 
 Influxdb::Influxdb(const char *url) {
@@ -29,7 +29,7 @@ DB_RESPONSE Influxdb::opendb(String db, String user, String password) {
         String queryUrl = _url+ "/query?q=show%20databases" + "&u=" + user + "&p=" + password; 
         if(_url.startsWith("https")) {
           DEBUG_PRINT("https request: " + queryUrl);
-          if(!http.begin(queryUrl, _certThumbPrint)) { //HTTPs
+          if(!http.begin(queryUrl, _certThumbPrint.c_str())) { //HTTPs
             DEBUG_PRINT("begin failed");
             _response = DB_ERROR;
             return _response;
@@ -67,7 +67,7 @@ DB_RESPONSE Influxdb::opendb(String db) {
         String queryUrl = _url+ "/query?q=show%20databases"; 
         DEBUG_PRINT("requestUrl: " + queryUrl);
         if(_url.startsWith("https")) {
-          http.begin(queryUrl, _certThumbPrint); //HTTPs
+          http.begin(queryUrl, _certThumbPrint.c_str()); //HTTPs
         } else {
           http.begin(queryUrl); //HTTP
         }
@@ -107,7 +107,7 @@ DB_RESPONSE Influxdb::write(String data) {
         String queryUrl = _url+ "/write?db=" + _db;
         DEBUG_PRINT("requestUrl: " + queryUrl);
         if(_url.startsWith("https")) {
-          http.begin(queryUrl, _certThumbPrint); //HTTPs
+          http.begin(queryUrl, _certThumbPrint.c_str()); //HTTPs
         } else {
           http.begin(queryUrl); //HTTP
         }
@@ -144,7 +144,7 @@ DB_RESPONSE Influxdb::query(String sql) {
 
         String queryUrl = _url+ url;
         if(_url.startsWith("https")) {
-          http.begin(queryUrl, _certThumbPrint); //HTTPs
+          http.begin(queryUrl, _certThumbPrint.c_str()); //HTTPs
         } else {
           http.begin(queryUrl); //HTTP
         }
