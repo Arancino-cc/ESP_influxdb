@@ -2,9 +2,9 @@
 #include "ESPinfluxdb.h"
 
 
-#define DEBUG_PRINT // comment this line to disable debug print
+#define DEBUG // comment this line to disable debug print
 
-#ifndef DEBUG_PRINT
+#ifndef DEBUG
 #define DEBUG_PRINT(a)
 #else
 #define DEBUG_PRINT(a) (Serial.println(String(F("[Debug]: "))+(a)))
@@ -117,9 +117,10 @@ DB_RESPONSE Influxdb::write(String data) {
 
         if (httpResponseCode == 204) {
                 _response = DB_SUCCESS;
-                String response = http.getString();    //Get the response to the request
+                // Commented because add an unuseless delay on the influx POST
+                //String response = http.getString();    //Get the response to the request
                 DEBUG_PRINT(String(httpResponseCode)); //Print return code
-                DEBUG_PRINT(response);                 //Print request answer
+                //DEBUG_PRINT(response);                 //Print request answer
 
         } else {
                 DEBUG_PRINT("Error on sending POST:");
